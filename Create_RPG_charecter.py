@@ -1,3 +1,10 @@
+GREEN = '\033[92m'
+YELLOW = '\033[93m'
+RED = '\033[91m'
+BLUE = '\033[94m'
+CYAN = '\033[96m'
+BOLD = '\033[1m'
+RESET = '\033[0m'
 full_dot = '●'
 empty_dot = '○'
 
@@ -16,7 +23,7 @@ def create_character(character_name, STR, INT, CHA):
         return "All stats should be no more than 4"
     elif INT + STR + CHA != 7:
         return "The character should start with 7 points"
-    return character_name + "\nSTR " +  full_dot * STR + empty_dot * (10 - STR) + "\nINT " + full_dot * INT + empty_dot * (10 - INT) + "\nCHA " + full_dot * CHA + empty_dot * (10 - CHA)
+    return  BOLD + YELLOW + character_name + RESET + "\nSTR " +  full_dot * STR + empty_dot * (10 - STR) + "\nINT " + full_dot * INT + empty_dot * (10 - INT) + "\nCHA " + full_dot * CHA + empty_dot * (10 - CHA)
 
 #character creation
 while True:
@@ -29,40 +36,50 @@ while True:
   if len(character_name) > 10:
     print("The character name is too long (max 10 chars).")
     continue
-  
+
   break
 
-print(f"Success! The character name set to {character_name}")
+print(f"---{GREEN}{BOLD}Success!{RESET} The character name set to {YELLOW}{BOLD}{character_name}{RESET}---")
 
 #stats
-print("Each stats should be from 1 to 4.")
+print(f"{RED}*Each stats should be from 1 to 4.{RESET}")
 
 total_point = 7
-print(f"You have total {total_point} points.")
+print(f"{CYAN}*You have total {total_point} points.{RESET}")
+STR = INT = CHA = 0
 
 #STR
-try:
-    STR = int(input("Enter your character strength:"))
-except:
-    print("You should only write number")
+while True:
+  try:
+    STR = int(input(f"{BLUE}Enter Strength (1-4):{RESET}"))
+    if (1 <= STR) and (STR>= 4):
+      print(f"{BOLD}Strength must be between 1 and 4!{RESET}")
+      continue
+    else:
+      total_point -= STR
+      print(f"{CYAN}You have total {total_point} points left.{RESET}")
+      break
+  except ValueError:
+    print(f"{RED}It must be an number!{RESET}")
+    continue
   
-print(f"You have {total_point - STR} left!")
-
 #INT
-try:
-    INT = int(input("Enter your character intelligence:"))
-except:
-  print("You should only write number")
-
-print(f"You have {total_point - INT} left!")
+while True:
+  try:
+    INT = int(input(f"{BLUE}Enter Intelligent (1-4):{RESET}"))
+    if 1 <= INT >= 4:
+      print(f"{BOLD}Intelligence must be between 1 and 4!{RESET}")
+      continue
+    else:
+      total_point -= INT
+      print(f"{CYAN}You have total {total_point} points left{RESET}")
+      break
+  except ValueError:
+    print(f"{RED}It must be an number!{RESET}")
+    continue
 
 #CHA
-try:
-    CHA = int(input("Enter your character charisma:"))
-except:
-  print("You should only write number")
-
-print(f"You have {total_point - CHA} left!")
-
+CHA = total_point
+print(f"{BLUE}Charisma is automatically set to {total_point} according to your remaing points.{RESET}")
 #printing
 print(create_character(character_name, STR, INT, CHA))
